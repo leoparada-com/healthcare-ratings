@@ -83,7 +83,7 @@
           level,
           role: ROLES[idx % ROLES.length],
           org:  HOSPITALES[idx % HOSPITALES.length],
-          photo_url: `app/static/img/faces/${pid}.png`, // ruta estática solicitada
+          photo_url: `src/static/img/faces/${pid}.png`, // ruta estática solicitada
           avg: null,
           votes: 0
         });
