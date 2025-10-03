@@ -1,0 +1,544 @@
+/* app/static/css/styles.css */
+/* =========================================================
+   Estilos CONSOLIDADOS — Institucional Salud (Chile)
+   Integrado con router (History API) y modal de envío
+   ========================================================= */
+
+/* ---------- Variables (paleta + layout) ---------- */
+:root{
+  /* Base */
+  --bg:#f5faf9;           /* fondo sobrio */
+  --panel:#ffffff;
+  --fg:#0f172a;
+  --muted:#5b6b73;
+
+  /* Salud (teal sobrio) */
+  --brand:#0f766e;        /* teal-700 */
+  --brand-2:#0ea5a4;      /* teal-500 */
+  --brand-3:#99f6e4;      /* teal-200/300 */
+  --border:#e2e8f0;
+  --shadow:0 10px 30px rgba(2,6,23,.08);
+  --radius:16px;
+
+  /* Azul/rojo institucional */
+  --accent-blue:#1657c1;
+  --accent-blue-100:#dbe7ff;
+  --accent-blue-200:#c7d6fb;
+  --accent-red:#e11d2e;
+
+  /* Colores de nivel (fondos tarjetas) */
+  --lvl-prim-bg: color-mix(in srgb, #22c55e 6%, #ffffff);
+  --lvl-prim-bd: color-mix(in srgb, #22c55e 18%, var(--border));
+  --lvl-sec-bg:  color-mix(in srgb, #3b82f6 6%, #ffffff);
+  --lvl-sec-bd:  color-mix(in srgb, #3b82f6 18%, var(--border));
+  --lvl-ter-bg:  color-mix(in srgb, #a855f7 6%, #ffffff);
+  --lvl-ter-bd:  color-mix(in srgb, #a855f7 18%, var(--border));
+
+  /* Chips por nivel */
+  --chip-prim-bg:#ecfdf5; --chip-prim-bd:#a7f3d0; --chip-prim-fg:#065f46;
+  --chip-sec-bg:#dbeafe;  --chip-sec-bd:#bfdbfe;  --chip-sec-fg:#1d4ed8;
+  --chip-ter-bg:#efe3ff;  --chip-ter-bd:#e9d5ff;  --chip-ter-fg:#7e22ce;
+
+  /* Layout anti-saltos */
+  --calif-h: 140px;   /* altura fija del bloque de calificación */
+  --avg-h:    38px;   /* altura del número grande */
+}
+
+/* ---------- Reset mínimo / accesibilidad ---------- */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;
+}
+:focus-visible{ outline:2px solid var(--brand-3); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* Utilidades */
+.hidden{display:none!important}
+
+/* ---------- Franja superior (Chile: SOLO azul/rojo) ---------- */
+.franja-chile{
+  height:8px;
+  background: linear-gradient(90deg,
+    var(--accent-blue) 0 50%,
+    var(--accent-red) 50% 100%);
+}
+
+/* ---------- Header / Nav (sticky solo arriba) ---------- */
+header{
+  position:sticky;top:0;z-index:10;
+  background:#ffffffcc;backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+.wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
+.brand{font-weight:800}
+.navlink{color:var(--accent-blue)!important}
+.navlink:hover{filter:brightness(90%)}
+header .btn.ghost{position:relative;border-color:transparent}
+header .btn.ghost:hover::after{
+  content:""; position:absolute; left:10px; right:10px; bottom:6px; height:3px;
+  background: var(--accent-blue); border-radius:2px;
+}
+
+/* Despegar el encabezado de sección (no sticky) */
+.intro{
+  position:static;
+  top:auto;
+  z-index:auto;
+  background:transparent;
+  backdrop-filter:none;
+  border:0;
+}
+
+/* ---------- Router (vistas) ---------- */
+.view{display:none; opacity:0; transition:opacity .18s ease;}
+.view.active{display:block; opacity:1;}
+
+/* ---------- Utilidades de layout ---------- */
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.grid{display:grid;gap:16px}
+.title{font-size:22px;font-weight:800;margin:0 0 4px}
+.muted{color:var(--muted)}
+
+/* ---------- Panel contenedor ---------- */
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+}
+
+/* =========================================================
+   BLOQUES por nivel (desconexión visual clara)
+   ========================================================= */
+.group-section{
+  display:grid; gap:12px; margin:26px 0 34px;
+  padding-top:16px; border-top:3px solid rgba(15,23,42,.06);
+  scroll-margin-top:80px;
+}
+.group-primaria{  --group-line: #22c55e22; }
+.group-secundaria{--group-line: #3b82f622; }
+.group-terciaria{ --group-line: #a855f722; }
+.group-section{ border-top-color: var(--group-line); }
+
+/* (Compat) si aún usas .row-section, mismos estilos */
+.row-section{display:grid;gap:12px;margin:26px 0 34px;padding-top:16px;border-top:3px solid rgba(15,23,42,.06);}
+
+/* Encabezado de grupo (“cap”) */
+.cap{
+  display:flex;align-items:center;gap:12px;
+  background:#ecfdf5; color:#065f46;
+  border:1px solid #a7f3d0;
+  padding:14px;border-radius:12px; position:relative;
+}
+.cap::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:6px;
+  background: var(--accent-blue);
+  border-top-left-radius:12px; border-bottom-left-radius:12px; opacity:.9;
+}
+.cap-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:999px;
+  background:#d1fae5;border:1px solid #a7f3d0;color:var(--accent-blue);
+}
+.cap-title{font-size:22px;font-weight:900;margin:0}
+
+/* Variantes de encabezado por nivel */
+.cap-primaria   .cap-icon{ background:#dcfce7;border-color:#86efac;color:#166534;}
+.cap-secundaria .cap-icon{ background:#dbeafe;border-color:#bfdbfe;color:#1d4ed8;}
+.cap-terciaria  .cap-icon{ background:#efe3ff;border-color:#e9d5ff;color:#7e22ce;}
+.cap-title-primaria{ color:#166534; }
+.cap-title-secundaria{ color:#1d4ed8; }
+.cap-title-terciaria{ color:#7e22ce; }
+
+/* Grid de tarjetas */
+.cards-row{
+  display:grid;gap:12px;
+  grid-template-columns:repeat(1,minmax(0,1fr));
+}
+@media(min-width:680px){ .cards-row{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media(min-width:980px){ .cards-row{grid-template-columns:repeat(3,minmax(0,1fr))} }
+
+/* ---------- Tarjetas ---------- */
+.card{
+  border:1px solid color-mix(in srgb, var(--border) 80%, var(--accent-blue-200));
+  border-radius:14px; padding:14px; background:#fff;
+  display:flex; flex-direction:column; gap:10px;
+  transition:box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+  contain: layout paint; /* aisla layout; previene micro-reflows */
+}
+.card:hover{
+  box-shadow:0 12px 24px rgba(22,87,193,.10);
+  transform:translateY(-1px);
+  border-color:var(--accent-blue-200);
+}
+
+/* Fondo sutil por nivel en tarjetas (requiere .level-*) */
+.card.level-primaria  { background: var(--lvl-prim-bg); border-color: var(--lvl-prim-bd); }
+.card.level-secundaria{ background: var(--lvl-sec-bg);  border-color: var(--lvl-sec-bd); }
+.card.level-terciaria { background: var(--lvl-ter-bg);  border-color: var(--lvl-ter-bd); }
+
+/* Cabecera ordenada: avatar + nombre + chip en línea */
+.card-top{display:flex;align-items:flex-start;gap:12px}
+.avatar-img{
+  width:44px;height:44px;border-radius:50%;
+  object-fit:cover;flex:0 0 44px;
+  border:2px solid var(--brand-3);
+  box-shadow:0 4px 12px rgba(15,118,110,.16);
+}
+.who{display:flex;flex-direction:column;gap:4px;min-width:0}
+.who-head{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.who-name{ font-weight:800; line-height:1.15; min-width:0; }
+.who-head .who-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.who-meta{
+  /* tipografía */
+  font-size:13px;
+  line-height:1.25;
+  color:#475569;
+  margin:0;
+
+  /* altura fija 2 líneas */
+  --_lh: 1.25;
+  min-height: calc(2 * 1em * var(--_lh));
+  max-height: calc(2 * 1em * var(--_lh));
+
+  /* truncado elegante a 2 líneas */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+/* Chip “Atención …” estilo rectángulo con esquinas suaves */
+.who-chip{
+  display:block;              /* ocupa la línea y alinea con el nombre */
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:6px;          /* rectángulo suavemente redondeado */
+  font-weight:800;
+  border:1px solid var(--border);
+  background:#eef2f7;
+  color:#0f172a;
+  white-space:nowrap;
+  margin-top:2px;
+  margin-left:0;              /* alineado con el nombre */
+}
+/* Variantes por nivel (requiere .level-*) */
+.level-primaria  .who-chip{
+  background:var(--chip-prim-bg);
+  border-color:var(--chip-prim-bd);
+  color:var(--chip-prim-fg);
+}
+.level-secundaria .who-chip{
+  background:var(--chip-sec-bg);
+  border-color:var(--chip-sec-bd);
+  color:var(--chip-sec-fg);
+}
+.level-terciaria .who-chip{
+  background:var(--chip-ter-bg);
+  border-color:var(--chip-ter-bd);
+  color:var(--chip-ter-fg);
+}
+
+/* (Compat) chip clásico si lo usas en otros lados */
+.chip{
+  display:inline-flex;align-items:center;
+  padding:4px 8px;border-radius:999px;width:fit-content;
+  background:#eef2f7;border:1px solid var(--border);font-size:12px;color:#0f172a;
+}
+
+/* ---------- Botones ---------- */
+.btn{
+  border:1px solid var(--border);background:#fff;
+  padding:8px 10px;border-radius:10px;cursor:pointer;
+  font-weight:700;text-align:center;transition:all .2s ease;
+}
+.btn:hover{background:#f1f5f9}
+.btn.sel,.btn.primary{background:var(--brand);color:#fff;border-color:transparent}
+.btn.ghost{background:#fff}
+.btn.danger{color:var(--accent-red);border-color:#fecaca}
+.btn:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 2px #fff, 0 0 0 4px rgba(15,118,110,.35);
+}
+.btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* Botón 1–7 seleccionado (intensidad por nivel) — requiere .level-* */
+.level-primaria   .rate .rate-btn.sel,
+.level-primaria   .rate .rate-btn[aria-pressed="true"]{ background:#16a34a; border-color:#16a34a; color:#fff; }
+.level-secundaria .rate .rate-btn.sel,
+.level-secundaria .rate .rate-btn[aria-pressed="true"]{ background:#2563eb; border-color:#2563eb; color:#fff; }
+.level-terciaria  .rate .rate-btn.sel,
+.level-terciaria  .rate .rate-btn[aria-pressed="true"]{ background:#7e22ce; border-color:#7e22ce; color:#fff; }
+
+/* ---------- Rating (1–7) ---------- */
+.rate{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+
+/* ---------- Calificación (bloque estable, sin saltos) ---------- */
+.calif{
+  display:grid;
+  gap:10px;
+  margin-top:6px;
+  height:var(--calif-h);        /* ALTURA FIJA del bloque */
+}
+
+.calif-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  min-height:28px;              /* reserva por variaciones de fuente */
+}
+
+.calif-title{
+  font-weight:900;color:var(--fg);
+  border-left:4px solid var(--accent-blue);
+  padding-left:8px;
+}
+
+/* KPI: votos — altura/anchos estables */
+.kpi-votes{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 10px; border-radius:999px; font-size:13px; font-weight:700;
+  background:#f8fafc; border:1px solid var(--border); color:#0f172a;
+  height:28px;
+}
+.kpi-votes i{ opacity:.9 }
+.kpi-votes .votes{
+  display:inline-block;
+  min-width:3ch;               /* 0–999; sube a 4ch si esperas 4 cifras */
+  text-align:right;
+}
+
+/* Valor promedio — caja y números de ancho fijo */
+.kpi-value{
+  line-height:1; display:flex; align-items:flex-end; gap:6px;
+  height:var(--avg-h); font-weight:900; color:var(--fg);
+}
+.kpi-value .avg{
+  display:inline-block;
+  height:var(--avg-h); line-height:var(--avg-h);
+  font-size:28px; letter-spacing:.2px;
+  min-width:4ch;                /* reserva “6.00” completo */
+  font-variant-numeric: tabular-nums;
+}
+/* Estado “Sin calificación aún” — misma caja, estilo tenue */
+.avg.is-empty{
+  display:inline-block;
+  height:var(--avg-h); line-height:var(--avg-h);
+  font-size:28px; font-weight:700; color:var(--muted); opacity:.55;
+}
+
+/* ---- Barra horizontal con marcador ---- */
+.calif-body-h{display:grid;gap:10px}
+.h-meter{display:grid;gap:6px}
+.h-track{
+  position:relative; height:14px; border-radius:10px; overflow:hidden;
+  background: linear-gradient(90deg, var(--accent-red) 0%, #f59e0b 50%, var(--brand-2) 100%);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.08);
+}
+.h-fill{
+  position:absolute; inset:0 auto 0 0; width:0%;
+  background: linear-gradient(90deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+}
+.h-marker{
+  position:absolute; top:50%; transform:translate(-50%,-50%); left:0%;
+  width:10px; height:20px; border-radius:6px;
+  background:#fff; border:2px solid var(--accent-blue);
+  box-shadow:0 1px 6px rgba(0,0,0,.15);
+  transition:left .3s ease;
+}
+.h-ticks{
+  position:absolute; inset:0; pointer-events:none;
+  background: repeating-linear-gradient(90deg,
+    transparent 0 calc((100%/7) - 1px),
+    rgba(255,255,255,.8) calc((100%/7) - 1px) calc(100%/7));
+  mix-blend-mode: soft-light;
+}
+.h-labels{
+  display:flex; justify-content:space-between;
+  font-size:11px; color:var(--muted); font-weight:700;
+}
+
+/* (Compat) barra vieja oculta */
+.bar{display:none}
+
+/* ---------- Estados por rango ---------- */
+.card.score-low  .kpi-value .avg{ color:var(--accent-red) }
+.card.score-mid  .kpi-value .avg{ color:#b45309 }   /* amber-700 */
+.card.score-high .kpi-value .avg{ color:var(--brand-2) }
+
+/* Micro realce al hover */
+.card:hover .h-track{ box-shadow: inset 0 1px 2px rgba(0,0,0,.10), 0 0 0 2px rgba(22,87,193,.06) }
+
+/* ---------- Tabla (ranking) ---------- */
+.table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.table th,.table td{padding:12px 14px;border-bottom:1px solid var(--border);text-align:left}
+.table th{background:#f1f5f9;font-size:14px}
+
+/* ---------- HIGHLIGHT de últimos votos ---------- */
+.highlight-row{
+  outline:2px solid var(--accent-blue);
+  outline-offset:-2px;
+  background: color-mix(in srgb, var(--accent-blue-100) 55%, white);
+}
+.highlight-row .chip{
+  background: var(--accent-blue-100);
+  border-color: var(--accent-blue-200);
+  color: var(--accent-blue);
+  font-weight:800;
+}
+
+/* ---------- Filas bajas (<4) ---------- */
+.table tr.low-row:not(.highlight-row) td {
+  background: #fee2e2;
+  color: #7f1d1d;
+  border-bottom-color: #fecaca;
+}
+.table tr.low-row td.avg-cell.low-score {
+  color: #ff0000 !important;
+  font-weight: 900;
+}
+/* Compat: marcado anterior de celdas sueltas */
+.low-score { background: transparent; color: #ff0000; font-weight: 800; }
+
+/* Fila baja + highlight (blend violeta suave) */
+.table tr.low-row.highlight-row td {
+  background: color-mix(in srgb, #fee2e2 62%, #dbe7ff 38%);
+  color: #7a1d1d;
+  border-bottom-color: color-mix(in srgb, #fecaca 62%, #c7d6fb 38%);
+}
+.table tr.low-row.highlight-row td.avg-cell.low-score {
+  color: #ff0000 !important;
+  font-weight: 900;
+}
+.table tr.low-row.highlight-row {
+  outline-color: color-mix(in srgb, var(--accent-blue) 55%, var(--accent-red) 45%);
+}
+
+/* ---------- Controles inferiores ---------- */
+/* === Mejora de contraste en la barra de envío === */
+.controls{
+  position:sticky;bottom:0;z-index:5;
+  background: color-mix(in srgb, var(--accent-blue-100) 85%, #e9f0ff 15%);
+  border-top:1px solid var(--accent-blue-200);
+  backdrop-filter:blur(8px);
+
+  /* más aire a los lados */
+  padding:12px 16px;                 /* ↑ era 12px 0 */
+  margin-top:10px;
+}
+
+/* un poco más en pantallas grandes */
+@media (min-width: 980px){
+  .controls{ padding:14px 20px; }
+}
+
+/* Botones dentro de la barra: base clara */
+.controls .btn{
+  background:#fff;
+  border-color: var(--accent-blue-200);
+}
+
+/* Enviar = acento celeste oscuro (contraste alto y limpio) */
+#btnSubmit{
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color:#fff;
+}
+#btnSubmit:hover{ filter:brightness(0.95); }
+#btnSubmit:focus-visible{
+  box-shadow:0 0 0 2px #fff, 0 0 0 4px color-mix(in srgb, var(--accent-blue) 65%, #000 35%);
+}
+
+
+/* ---------- Footer ---------- */
+.footer{color:var(--muted);font-size:12px;margin-top:10px}
+
+/* ---------- Modo impresión ---------- */
+@media print{
+  header,.controls,.franja-chile{display:none!important}
+  .panel{box-shadow:none;border-color:#ddd}
+}
+
+/* =========================================================
+   Estado sin datos — SIN parpadeos y SIN cambio de altura
+   ========================================================= */
+.no-data .calif-header,
+.no-data .calif-body-h{ display:none; }
+
+/* Espaciador con la MISMA altura que el bloque .calif */
+.calif-spacer{
+  display:none;
+  height:var(--calif-h);
+}
+.no-data .calif-spacer{ display:block; }
+
+/* IMPORTANTE: NO ocultamos .avg por clase .no-data (evita reflow);
+   usamos .avg.is-empty con la misma caja para mantener el layout */
+
+/* ---------- Estilos de gráficos ---------- */
+.charts{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.charts .bar-wrap{
+  flex:1 1 420px;max-width:600px;min-width:320px;
+  height:320px; /* fijo, evita reflow/loop */
+}
+.charts .pie-wrap{
+  flex:0 0 320px;max-width:360px;width:min(100%,360px);
+  aspect-ratio:1/1;display:block; /* círculo perfecto */
+}
+.charts canvas{width:100%;height:100%}
+@media (max-width:680px){
+  .charts .bar-wrap{min-width:100%}
+}
+
+/* =========================================================
+   MODAL de envío (simulación de espera) — CONSOLIDADO
+   ========================================================= */
+#submitModal{
+  position: fixed;
+  inset: 0;
+  display: none;                 /* oculto por defecto */
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,6,23,.35);
+  z-index: 1000;
+
+  /* UX: fade-in del overlay */
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+
+#submitModal.show{
+  display: flex;                 /* se muestra centrado */
+  opacity: 1;                    /* activa el fade-in */
+}
+
+.modal-card{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 20px 18px;
+  min-width: 280px;
+  text-align: center;
+}
+
+.modal-card .title{ margin: 0; }
+
+/* Spinner más visible dentro del modal */
+#submitModal .fa-spinner{
+  font-size: 18px;
+  opacity: .9;
+}
+
+/* (Opcional) si usas body.modal-open en JS para bloquear scroll */
+body.modal-open{ overflow: hidden; }
+
+
